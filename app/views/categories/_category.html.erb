@@ -1,0 +1,23 @@
+
+<tr class="total-line">
+  <td class = "total-cell">
+    <% link_str = category.name + '(' + category.book_count.to_s + ')' %>
+    <% link_url = link_to link_str,  :controller => "bookclub",
+                                     :action => "show_books_by_category",
+                                     :category => category %>
+    <% if @query_str && !@query_str.empty? %>
+      <% link_url.gsub!(/href=\"(.*?)\"/,
+         'href="\1' + '&query_str=' + h(@query_str) + '"') %>
+    <% end %>
+    <% if @owner %>
+      <% link_url.gsub!(/href=\"(.*?)\"/,
+         'href="\1' + '&owner=' + h(@owner.id.to_s) + '"') %>
+    <% end %>
+    <% if @reader %>
+      <% link_url.gsub!(/href=\"(.*?)\"/,
+         'href="\1' + '&reader=' + h(@reader.id.to_s) + '"') %>
+    <% end %>
+    <%= link_url %>
+    <br />
+  </td>
+</tr>

@@ -1,0 +1,15 @@
+
+<tr class="total-line">
+  <td class = "total-cell">
+    <% link_str = category.name + '(' + category.book_count.to_s + ')' %>
+    <%= link_to link_str,  :controller => "bookclub",
+                           :action => "show_books_by_category",
+                           :category => category %>
+    <br />
+  </td>
+</tr>
+<% unless category.children.empty? %>
+  <% category.children.each do |c| %>
+  <%= render(c) %>
+  <% end %>
+<% end %>

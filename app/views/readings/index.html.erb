@@ -1,0 +1,37 @@
+<% if notice %>
+<p id="notice"><%= notice %></p>
+<% end %>
+
+<div id="reading_list">
+  <h1>图书借阅列表</h1>
+
+<p><%= will_paginate @readings %></p>
+
+  <table>
+    <td>图书名称</td>
+    <td>web id</td>
+    <td>状态</td>
+    <td>借阅时间</td>
+    <td>归还时间</td>
+    <td>评分</td>
+    <td>评注</td>
+
+    <% @readings.each do |reading| %>
+    <tr class="<%= cycle('list-line-odd', 'list-line-even') %>">
+
+      <td><%=h reading.book.title %></td>
+      <td><%=h reading.reader.webid %></td>
+      <td><%=h reading.status %></td>
+      <td><%=h (reading.read_at || "").to_date %></td>
+      <td><%=h (reading.return_at || "").to_date %></td>
+      <td><%=h reading.rating %></td>
+      <td><%=h reading.comment %></td>
+
+    </tr>
+    <% end %>
+  </table>
+</div>
+
+<br />
+
+<p><%= will_paginate @readings %></p>

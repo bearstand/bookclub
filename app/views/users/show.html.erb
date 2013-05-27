@@ -1,0 +1,48 @@
+<% if notice %>
+<p id="notice"><%= notice %></p>
+<% end %>
+
+<h1><%= @user.name %> 的用户信息
+<% if validate_permission?(@user) %>
+  <%= link_to '编辑', edit_user_path(@user) %>
+<% end %>
+</h1>
+
+<p>
+  <b>web id:</b>
+  <%= @user.webid %>
+</p>
+
+<p>
+  <b>名字:</b>
+  <%= @user.name %>
+</p>
+
+<p>
+  <b>邮箱:</b>
+  <%= @user.email %>
+</p>
+
+<p>
+  <b>电话:</b>
+  <%= @user.phone_number %>
+</p>
+
+<p>
+  <b>座位号:</b>
+  <%= @user.address %>
+</p>
+
+<p>
+  <b>
+  <%= link_to "拥有的图书", :controller => "bookclub",
+              :action => "show_books_by_owner",
+              :owner => @user
+  %>
+  <%= link_to "借阅历史", :controller => "bookclub",
+              :action => "show_books_by_reader",
+              :reader => @user
+  %><br />
+  </b>
+</p>
+

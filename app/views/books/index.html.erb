@@ -1,0 +1,31 @@
+<div id="book_list">
+  <h1>图书列表</h1>
+
+  <%= link_to '添加图书', new_book_path %>
+  <%= link_to '建议购买', new_book_path(:suggest=>1) %>
+
+  <table>
+    <% @books.each do |book| %>
+    <tr class="<%= cycle('list-line-odd', 'list-line-even') %>">
+      <td class="list-description">
+        <dl>
+          <dt><%=h book.title %></dt>
+          <dd><%=h truncate(book.description.gsub(/<.*?>/, ''),
+                   :length => 80) %></dd>
+        </dl>
+      </td>
+
+      <td class="list-actions">
+        <%= link_to '显示', book %><br />
+        <%= link_to '编辑', edit_book_path(book) %><br />
+        <%= link_to '删除我的资源', book, :confirm => "确认删除图书?",
+                  :method => :delete %>
+      </td>
+    </tr>
+    <% end %>
+  </table>
+</div>
+
+<br />
+
+<p><%= will_paginate @books %></p>

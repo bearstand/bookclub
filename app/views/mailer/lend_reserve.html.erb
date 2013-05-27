@@ -1,0 +1,13 @@
+<p>
+<%= @owner.name %>, 您好:<br /><br />
+<%= @reader.name %> 向您预借图书： <b><%= @book.title %></b> ！
+<br />
+<br />
+
+<% if @current_readers %>
+  当前阅读及预借者列表：<br />
+  <% @current_readers.each do |r| %>
+    <%= r.name %><br />
+  <% end %>
+<% end %>
+</p>

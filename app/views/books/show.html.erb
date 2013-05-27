@@ -1,0 +1,113 @@
+
+<% if notice %>
+<p id="notice"><%= notice %></p>
+<% end %>
+
+<p>
+  <% if @book.image_url %>
+    <%= link_to image_tag(@book.image_url, :border => 0) %>
+  <% end %>
+</p>
+
+<p>
+  <b>名称:</b>
+  <%= @book.title %>
+</p>
+
+<p>
+  <b>ISBN:</b>
+  <%= @book.isbn %>
+</p>
+
+<p>
+  <b>语言:</b>
+  <%= @book.language %>
+</p>
+
+<p>
+  <b>价格:</b>
+  <%= @book.price %>
+</p>
+
+<p>
+  <b>链接:</b>
+  <%= link_to_unless @book.web_url.nil?, h(@book.web_url), @book.web_url %>
+</p>
+
+<p>
+  <b>描述:</b>
+  <%= @book.description %>
+</p>
+
+<p>
+  <% if @book.status == "suggest" %>
+  <%= button_to "新书上架", { :controller => "books",
+                                              :action => "i_have_one",
+                                              :id => @book.id },
+                                              :confirm => "shangjia?" %>
+  <%else%>
+  <b>拥有者:</b>
+  <table>
+  <% @book.owners.each do |o| %>
+  <tr>
+    <td><%= link_to o.name, user_path(o) %></td>
+    <td>
+    <%= link_to "拥有的图书", :controller => "bookclub",
+                            :action => "show_books_by_owner",
+                            :owner => o %>
+    </td>
+  </tr>
+  <% end %>
+  </table>
+
+  <br />
+  <%= button_to "我有一本", { :controller => "books",
+                                              :action => "i_have_one",
+                                              :id => @book.id },
+                                            :confirm => "确认添加一本?" %>
+  <br />
+  <%end%>
+
+</p>
+
+<p>
+  <b>剩余数目:</b>
+  <%= @book.quantity %>
+</p>
+
+<p>
+  <b>借阅历史:</b>
+  <table>
+  <% @readings.each do |r| %>
+  <tr>
+    <td>
+      <% if r.reader %>
+        <%= link_to r.reader.name, user_path(r.reader) %>
+      <% end %>
+    </td>
+    <td>
+    <%= link_to "拥有的图书", :controller => "bookclub",
+                            :action => "show_books_by_owner",
+                            :owner => r.reader %>
+    </td>
+    <td>
+      <% case r.reading_status %>
+        <% when "RESERVED" %>
+        预借
+        <% when "READING" %>
+        阅读中
+        <% when "RETURNED" %>
+        已归还
+        <% when "SUGGEST" %>
+        建议购买
+      <% end %>
+    </td>
+    <td><%= r.rating %></td>
+    <td><%= r.comment %></td>
+  </tr>
+  <% end %>
+  </table>
+  <br />
+</p>
+
+<p><%= will_paginate @readings %></p>

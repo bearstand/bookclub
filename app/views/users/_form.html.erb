@@ -1,0 +1,75 @@
+<div class="bookclub_form">
+
+<%= form_for @user do |f| %>
+  <% if @user.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@user.errors.count, "error") %>
+        导致保存失败：</h2>
+      <ul>
+      <% @user.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+
+    </div>
+  <% end %>
+
+  <fieldset>
+  <legend>输入用户详细信息</legend>
+
+  <div>
+    <label>web id</label>:
+    <% unless @user.webid? %>
+    <%= f.text_field :webid %>
+    <% else %>
+    <%= f.text_field :webid, :readonly => true %>
+    <% end %>
+  </div>
+
+  <div>
+    <label>密码</label>:
+    <%= f.password_field :password, :size => 40 %>
+  </div>
+
+  <div>
+    <label>密码确认</label>:
+    <%= f.password_field :password_confirmation, :size => 40 %>
+  </div>
+
+  <div>
+    <label>姓氏</label>:
+    <%= f.text_field :last_name %>
+  </div>
+
+  <div>
+    <label>名字</label>:
+    <%= f.text_field :first_name %>
+  </div>
+
+  <div>
+    <label>邮箱</label>:
+    <%= f.text_field :email %>
+  </div>
+
+  <div>
+    <label>电话</label>:
+    <%= f.text_field :phone_number %>
+  </div>
+
+  <div>
+    <label>座位号</label>:
+    <%= f.text_field :address %>
+  </div>
+
+  <div>
+    <label></label>
+  </div>
+
+  <div>
+    <%= f.submit %>
+  </div>
+
+  </fieldset>
+<% end %>
+
+</div>

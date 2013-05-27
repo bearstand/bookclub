@@ -1,0 +1,59 @@
+<% if notice %>
+<p id="notice"><%= notice %></p>
+<% end %>
+
+<h1>
+<% if @reader %>
+  <%= link_to @reader.name,
+      user_path(@reader) %> 借阅的
+<% end %>
+<% if @owner %>
+  <%= link_to @owner.name,
+      user_path(@owner) %> 拥有的
+<% end %>
+<% if @category %>
+  <%= @category.name %>类
+<% end %>
+图书列表
+</h1>
+
+<p><%= will_paginate @books %></p>
+
+<% @books.each do |book| %>
+  <div class="entry">
+    <!-- <% if book.image_url && File.exists?(Rails.root.to_s + '/public/images/' + book.image_url) %> -->
+    <!--   <%= link_to image_tag(book.image_url, :border => 0), book %> -->
+    <!-- <% end %> -->
+    <a href="<%= url_for book %>">
+      <% if book.quantity > 0 %>
+      <h3><%= book.title %></h3>
+      <% else %>
+      <h4><%= book.title %></h4>
+      <% end %>
+    </a>
+    <% if book.rating %>
+      <p><%= book.rating.value %></p>
+    <% end %>
+    <p><%=sanitize book.description %></p>
+
+    <div class="lend-line">
+      <% if book.total_quantity <= 0 %>
+        不可借
+      <% elsif book.quantity > 0 %>
+        <%= button_to "借阅", { :controller => :bookclub,
+                               :action => "lend_book",
+                               :lend => "lend_in",
+                               :id => book },
+                             :confirm => "确认借阅?" %>
+      <% else %>
+        <%= button_to "预借", { :controller => :bookclub,
+                               :action => "lend_book",
+                               :lend => "reserve",
+                               :id => book },
+                             :confirm => "确认预借?" %>
+      <% end %>
+    </div>
+  </div>
+<% end %>
+
+<p><%= will_paginate @books %></p>

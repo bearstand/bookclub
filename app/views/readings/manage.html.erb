@@ -1,0 +1,133 @@
+<% if notice %>
+<p id="notice"><%= notice %></p>
+<% end %>
+
+<div id="reading_list">
+<% if @in_readings.count > 0 || @out_readings.count > 0 %>
+  <h1><%= @reader.name %> 的图书借阅管理</h1>
+
+<% if @out_readings.count > 0 %>
+  <h3>借出图书列表</h3>
+  <table>
+    <td>图书名称</td>
+    <td>借阅者</td>
+    <td>状态</td>
+    <td>借阅时间</td>
+    <td>归还时间</td>
+    <td>评分</td>
+    <td>评注</td>
+    <td>创建时间</td>
+    <td>更新时间</td>
+
+    <% @out_readings.each do |reading| %>
+    <tr class="<%= cycle('list-line-odd', 'list-line-even') %>">
+
+      <td><%=h reading.book.title %></td>
+      <td>
+        <% if reading.reader %>
+        <%=h reading.reader.webid %>
+        <% end %>
+      </td>
+      <td>
+      <% case reading.reading_status %>
+        <% when "RESERVED" %>
+        预借
+        <% when "READING" %>
+        已借出
+        <% when "RETURNED" %>
+        已归还
+      <% end %>
+      </td>
+      <td><%=h (reading.read_at || "").to_date %></td>
+      <td><%=h (reading.return_at || "").to_date %></td>
+      <td><%=h reading.rating %></td>
+      <td><%=h reading.comment %></td>
+      <td><%=h (reading.created_at || "").to_date %></td>
+      <td><%=h (reading.updated_at || "").to_date %></td>
+
+      <td>
+      <% if !reading.read_at %>
+        <%= button_to "借出", { :controller => :bookclub,
+                               :action => "lend_book",
+                               :lend => "lend_out",
+                               :id => reading },
+                             :confirm => "确认借出？" %>
+      <% elsif !reading.return_at %>
+        <td>
+        <%= button_to "确认归还", { :controller => :bookclub,
+                                  :action => "lend_book",
+                                  :lend => "return",
+                                  :id => reading },
+                                  :confirm => "确认已归还？" %>
+        </td>
+      <% end %>
+      </td>
+    </tr>
+    <% end %>
+  </table>
+<% end %>
+  <h3>借阅图书列表</h3>
+  <table>
+    <td>图书名称</td>
+    <td>拥有者</td>
+    <td>状态</td>
+    <td>借阅时间</td>
+    <td>归还时间</td>
+    <td>评分</td>
+    <td>评注</td>
+    <td>创建时间</td>
+    <td>更新时间</td>
+
+    <% @in_readings.each do |reading| %>
+    <tr class="<%= cycle('list-line-odd', 'list-line-even') %>">
+
+      <td><%=h reading.book.title %></td>
+
+      <% if reading.resource %>
+        <td>
+          <% if reading.resource.owner %>
+          <%=h reading.resource.owner.webid %>
+          <% end %>
+        </td>
+      <% else %>
+        <td>N/A</td>
+      <% end %>
+
+      <td>
+      <% case reading.reading_status %>
+        <% when "RESERVED" %>
+        预借
+        <% when "READING" %>
+        阅读中
+        <% when "RETURNED" %>
+        已归还
+      <% end %>
+      </td>
+      <td><%=h (reading.read_at || "").to_date %></td>
+      <td><%=h (reading.return_at || "").to_date %></td>
+      <td><%=h reading.rating %></td>
+      <td><%=h reading.comment %></td>
+      <td><%=h (reading.created_at || "").to_date %></td>
+      <td><%=h (reading.updated_at || "").to_date %></td>
+
+      <td>
+      <% if !reading.read_at %>
+        <%= button_to "撤消", { :controller => :bookclub,
+                             :action => "lend_book",
+                             :lend => "cancel",
+                             :id => reading },
+                           :confirm => "确认撤消？" %>
+
+      <% else %>
+        <%= link_to "评价", edit_reading_path(reading) %>
+      <% end %>
+      </td>
+    </tr>
+    <% end %>
+  </table>
+<% end %>
+
+</div>
+
+<br />
+

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>NjcBookclub</title>
+  <%= stylesheet_link_tag :all %>
+  <%= javascript_include_tag :defaults %>
+  <%= csrf_meta_tag %>
+</head>
+<body id="bookclub">
+  <div id="banner">
+    <%= link_to image_tag("logo.png", :border => 0),
+                :controller => "bookclub",
+                :action  => "index" %>
+    <%= @page_title || "南京阿尔卡特朗讯图书借阅系统" %>
+  </div>
+  <div id="columns">
+    <div id="side">
+
+      <%= link_to '主页',     :controller => "bookclub",
+                             :action => "index"%><br />
+      <%= link_to '新闻',     :controller => "bookclub",
+                             :action => "news"%><br />
+      <%= link_to '常见问题',  :controller => "bookclub",
+                             :action => "faq"%><br />
+      <%= link_to '联系我们',  :controller => "bookclub",
+                             :action => "contact"%><br />
+
+      <% if session[:user_id] %>
+        <br />
+        <%= link_to '注销', logout_path, :method => :delete %><br />
+        <%= link_to '账号管理', :controller => "users",
+                              :action => "show",
+                              :id => session[:user_id] %><br />
+      <% else %>
+        <br />
+        <%= link_to '登录', login_path %><br />
+        <%= link_to '注册', :controller => "users",
+                           :action => "new" %><br />
+      <% end %>
+      
+      <%= link_to '图书管理', :controller => "books",
+                            :action => "manage" %><br />
+      <%= link_to '借阅管理', :controller => "readings",
+                            :action => "manage" %><br />
+      <br />
+
+      <div id="query">
+        <table>
+          <tr>
+            <%= form_tag({:controller => "bookclub",
+                         :action => "show_books_by_query"},
+                         :method => "get") do %>
+            <td><%= text_field_tag(:query_str,
+                                   @query_str,
+                                   :size => 12) %></td>
+            <td><%= submit_tag("搜索") %></td>
+            <% end %>
+          </tr>
+        </table>
+      </div>
+
+      <% if @categories %>
+      <br />
+      <div id="category">
+        <div class="category_title">图书种类</div>
+        <table>
+          <%= render @categories %>
+        </table>
+      </div>
+      <br />
+      <% end %>
+
+    </div>
+    <div id="main">
+      <%= yield %>
+    </div>
+  </div>
+</body>
+</html>

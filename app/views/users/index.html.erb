@@ -1,0 +1,32 @@
+<% if notice %>
+<p id="notice"><%= notice %></p>
+<% end %>
+
+<h1>用户列表</h1>
+
+<table>
+  <tr>
+    <th>web id</th>
+    <th>名字</th>
+    <th></th>
+  </tr>
+
+<p><%= will_paginate @books %></p>
+
+<% @users.each do |user| %>
+  <tr>
+    <td><%= user.webid %></td>
+    <td><%= user.name %></td>
+    <td><%= link_to '显示', user %></td>
+    <td><%= link_to '编辑', edit_user_path(user) %></td>
+    <td><%= link_to '删除', user, :confirm => '确定删除用户?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to '新建用户', new_user_path %>
+
+<p><%= will_paginate @books %></p>
+
