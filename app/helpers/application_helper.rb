@@ -1,7 +1,8 @@
 require 'net/http'
 
 module ApplicationHelper
-  PROXY_SERVER = '192.11.225.125'
+  #PROXY_SERVER = '192.11.225.125'
+  PROXY_SERVER = 'cn.proxy.lucent.com'
   PROXY_PORT   = 8000
 
   def fetch(url)
@@ -15,6 +16,7 @@ module ApplicationHelper
     when Net::HTTPSuccess, Net::HTTPRedirection
       return res
     else
+      puts "#{res}, #{url}"
       return nil
     end
   end

@@ -9,6 +9,8 @@ class BookclubController < ApplicationController
     @reader    = User.find(params[:reader]) if params[:reader]
     conditions = ""
     joins      = ""
+    show_allbook = "no"
+    show_allbook = "yes" if params.include?("show_all")
 
     # though currently @query_str, @owner or @reader excludes each other
     # below codes do not make them excluded
@@ -42,13 +44,24 @@ class BookclubController < ApplicationController
     # when choose a @category, the total @categories above will not be impacted,
     # but the later @books will do.
     if @category
-      joins += " inner join categories_books" +
+      if @category.id == 13
+        show_allbook = "yes"
+        conditions += " books.status like 'suggest'"
+      else
+        joins += " inner join categories_books" +
                "   on categories_books.book_id = books.id" +
                "   and categories_books.category_id = #{@category.id}"
+      end
+    end
+
+    if ! (show_allbook == "yes")
+      joins += " inner join resources" +
+             "  on resources.book_id = books.id" +
+             "  and resources.total_quantity != 0"
     end
 
     @books = Book.paginate(:include => [ :rating, :resources ],
-                           :select => " books.*",
+                           :select => " DISTINCT books.*",
                            :joins => joins,
                            :conditions => conditions,
                            :page => params[:page],

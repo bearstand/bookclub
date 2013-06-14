@@ -213,6 +213,8 @@ protected
                            :user_id => session[:user_id],
                            :created_at => time,
                            :updated_at => time,
+                           :read_at => time,
+                           :return_at => time,
                            :status=>"suggest")
         sugg.save
     end

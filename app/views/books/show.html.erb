@@ -11,8 +11,35 @@
 
 <p>
   <b>名称:</b>
-  <%= @book.title %>
+  <font size=4><%= @book.title %> </font>
 </p>
+
+<br />
+
+<p>
+  <b>剩余数目:</b>
+  <%= @book.quantity %>
+</p>
+<div class="lend-line">
+      <% if @book.total_quantity <= 0 %>
+        不可借
+      <% elsif @book.quantity > 0 %>
+        <%= button_to "借阅", { :controller => :bookclub,
+                               :action => "lend_book",
+                               :lend => "lend_in",
+                               :id => @book },
+                             :confirm => "确认借阅?",
+                             :style=>"color:blue;font:bold 15px Arial; height:30px;width:90px" %>
+      <% else %>
+        <%= button_to "预借", { :controller => :bookclub,
+                               :action => "lend_book",
+                               :lend => "reserve",
+                               :id => @book },
+                             :confirm => "确认预借?" %>
+      <% end %>
+</div>
+
+<br />
 
 <p>
   <b>ISBN:</b>
@@ -60,6 +87,7 @@
   <% end %>
   </table>
 
+
   <br />
   <%= button_to "我有一本", { :controller => "books",
                                               :action => "i_have_one",
@@ -68,11 +96,6 @@
   <br />
   <%end%>
 
-</p>
-
-<p>
-  <b>剩余数目:</b>
-  <%= @book.quantity %>
 </p>
 
 <p>

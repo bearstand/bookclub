@@ -25,9 +25,11 @@ class User < ActiveRecord::Base
   validates :webid, :presence => true, :uniqueness => true
   validates :email, :presence => true
   validates :password, :confirmation => true
-  validates_format_of  :email, :message => "Email with incorrect Format", :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i  
+  #validates_format_of  :email, :message => "Email with incorrect Format", :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i  
+  validates_format_of  :email, :message => "Email with incorrect Format", :with => /\A([^@\s]+)@(alcatel-lucent.com)/i  
   validate  :password_must_be_present
 
+  @@domain="alcatel-lucent.com"
   def User.authenticate(webid, password)
     if user = find_by_webid(webid)
       salt = user.hashed_password[0, 2]      
