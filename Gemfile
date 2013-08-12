@@ -32,3 +32,6 @@ gem 'mysql2', '0.2.7'
 
 gem 'will_paginate' , '>= 3.0.pre'
 #gem "will_paginate", :git => "http://github.com/mislav/will_paginate.git", :branch => "rails3"
+#gem "capybara", "1.1.1"
+#gem "cucumber", "1.1.0"
+#gem "cucumber-rails", "0.3.2"

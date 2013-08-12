@@ -2,6 +2,8 @@ NjcBookclub::Application.routes.draw do
   get "books/index"
   get "books/manage"
   get "books/i_have_one"
+  get "books/best_books"
+  get "books/best_sharer"
   post "books/i_have_one"
   resources :books
 
@@ -38,6 +40,7 @@ NjcBookclub::Application.routes.draw do
     post "bookclub/show_books_by_query" => :index
     get "bookclub/show_books_by_owner" => :index
     get "bookclub/show_books_by_reader" => :index
+    get "bookclub/show_suggested" =>:index
   end
 
   get "bookclub/index"
@@ -50,6 +53,7 @@ NjcBookclub::Application.routes.draw do
   get "bookclub/show_books_by_query"
   post "bookclub/show_books_by_query"
   get "bookclub/show_books_by_reader"
+  get "bookclub/show_suggested"
   get "bookclub/lend_book"
   post "bookclub/lend_book"
 

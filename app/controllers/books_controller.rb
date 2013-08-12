@@ -15,6 +15,15 @@ class BooksController < ApplicationController
     # end
   end
 
+  def best_books
+  end
+
+  def show_suggested
+  end
+
+  def best_sharer
+  end
+
   def show
     @book = Book.find(params[:id],
                       :include => [ :owners ])
@@ -63,17 +72,15 @@ class BooksController < ApplicationController
     @book = Book.new(params[:book])
     category = Category.find_by_id(params[:book_category])
     @book.categories << category
+    @category_options = Category.all
 
-    puts "create book"
-    puts "parms #{flash[:suggest]}"
     respond_to do |format|
-      # for book be suggested(category id is 13) to buy, set quantity to zero
+      # for book be suggested to buy, set quantity to zero
       if add_book(flash[:suggest] =="1" )
-
         format.html { redirect_to(@book, :notice => "新书添加成功！") }
         format.xml  { render :xml => @book, :status => :created, :location => @book }
       else
-        format.html { render :action => "new" }
+        format.html { render :action => "new", :notice => flash[:notice], :suggest=>"1" }
         format.xml  { render :xml => @book.errors, :status => :unprocessable_entity }
       end
     end
@@ -121,7 +128,18 @@ class BooksController < ApplicationController
     resource = Resource.first(:conditions => [ "user_id = ? and book_id = ?",
                                                session[:user_id],
                                                @book.id ])
-    resource.delete
+    if ( resource.total_quantity > 1 )
+	resource.total_quantity--
+        resource.save
+    else 
+	resource.delete
+    end
+
+    if  @book.total_quantity == 0 
+	puts "deleting the book "
+	@book.delete
+    end
+
 
     respond_to do |format|
       format.html { redirect_to(books_url) }
@@ -152,6 +170,7 @@ class BooksController < ApplicationController
 protected
   def add_book(suggest=false)
     book_id = nil
+puts "#{suggest}"
 
     if @book.isbn.nil? || @book.isbn.empty?
       book = Book.find(:first, :conditions => [ "title = ?",
@@ -167,8 +186,15 @@ protected
     if book
       resource = Resource.find(:first, :conditions => [ "book_id = ? and ( user_id = ? or total_quantity=0)",
                                 book.id, session[:user_id] ])
-      puts resource
       book_id = book.id
+
+      # if the book already existed, and someone suggest to buy one 
+      if suggest
+	flash[:notice]="book existed"
+puts "book existed"
+	return false
+      end
+
       if  book.status == "suggest" 
         book.status = "added"
         book.save
@@ -180,8 +206,6 @@ protected
       end
       book_id = @book.id
     end
-
-    # add resource only when it is not suggested book
 
     if suggest 
         resource = Resource.new(:user_id => session[:user_id],

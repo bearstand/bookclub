@@ -70,6 +70,15 @@
       <br />
       <% end %>
 
+       <br />
+       <%= link_to 'best books',     :controller => "books",
+                             :action => "best_books"%><br />
+       <%= link_to 'requested books',     :controller => "bookclub",
+                             :action => "index", :show_suggest=>"yes" %><br />
+       <%= link_to 'best sharer',     :controller => "books",
+                             :action => "best_sharer"%><br />
+
+
     </div>
     <div id="main">
       <%= yield %>

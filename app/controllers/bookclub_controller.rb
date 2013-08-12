@@ -2,28 +2,44 @@
 class BookclubController < ApplicationController
   skip_before_filter :authorize, :except => [ :lend_book ]
 
+
+  #this function is becoming ugly 
+  #it is doing too many things
   def index
     @query_str = params[:query_str] || ""
     @category  = Category.find(params[:category]) if params[:category]
     @owner     = User.find(params[:owner]) if params[:owner]
     @reader    = User.find(params[:reader]) if params[:reader]
-    conditions = ""
+    conditions = "" 
     joins      = ""
     show_allbook = "no"
     show_allbook = "yes" if params.include?("show_all")
+    show_suggest = "yes" if params.include?("show_suggest")
+#print params
 
     # though currently @query_str, @owner or @reader excludes each other
     # below codes do not make them excluded
     if (!@query_str.nil? && !@query_str.empty?)
       # TODO: eliminate SQL Injection Attack
       conditions += " books.title like '%" + @query_str + "%'"
+      show_allbook='yes'
     end
+
+    if ( show_allbook != "yes" )
+	    if show_suggest == "yes"
+		    conditions += "books.status like 'suggest'"
+	    else
+		    conditions += "( books.status is null or books.status not like 'suggest')"
+	    end
+    end
+
     if @owner
       joins +=   " inner join resources" +
                  " on resources.book_id = books.id" +
                  "   and resources.user_id = #{@owner.id}"
       order  =   " resources.id desc"
     end
+
     if @reader
       joins +=   " inner join readings" +
                  "   on readings.book_id = books.id" +
@@ -54,11 +70,13 @@ class BookclubController < ApplicationController
       end
     end
 
-    if ! (show_allbook == "yes")
-      joins += " inner join resources" +
-             "  on resources.book_id = books.id" +
-             "  and resources.total_quantity != 0"
-    end
+    #if ! (show_allbook == "yes")
+    #  conditions += " resources.total_quantity != 0 "
+      #joins += " inner join resources" +
+      #       "  on resources.book_id = books.id" +
+      #       "  and resources.total_quantity != 0"
+    #end
+
 
     @books = Book.paginate(:include => [ :rating, :resources ],
                            :select => " DISTINCT books.*",
