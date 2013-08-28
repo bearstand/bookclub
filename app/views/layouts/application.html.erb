@@ -18,12 +18,16 @@
 
       <%= link_to '主页',     :controller => "bookclub",
                              :action => "index"%><br />
-      <%= link_to '新闻',     :controller => "bookclub",
-                             :action => "news"%><br />
       <%= link_to '常见问题',  :controller => "bookclub",
                              :action => "faq"%><br />
       <%= link_to '联系我们',  :controller => "bookclub",
                              :action => "contact"%><br />
+       <%= link_to '热门书籍',     :controller => "books",
+                             :action => "best_books"%><br />
+       <%= link_to '需求查询',     :controller => "bookclub",
+                             :action => "index", :show_suggest=>"yes" %><br />
+       <%= link_to '分享排行',     :controller => "books",
+                             :action => "best_sharer"%><br />
 
       <% if session[:user_id] %>
         <br />
@@ -70,13 +74,6 @@
       <br />
       <% end %>
 
-       <br />
-       <%= link_to 'best books',     :controller => "books",
-                             :action => "best_books"%><br />
-       <%= link_to 'requested books',     :controller => "bookclub",
-                             :action => "index", :show_suggest=>"yes" %><br />
-       <%= link_to 'best sharer',     :controller => "books",
-                             :action => "best_sharer"%><br />
 
 
     </div>

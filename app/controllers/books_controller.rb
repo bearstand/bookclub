@@ -129,7 +129,8 @@ class BooksController < ApplicationController
                                                session[:user_id],
                                                @book.id ])
     if ( resource.total_quantity > 1 )
-	resource.total_quantity--
+	resource.total_quantity-=1
+	resource.current_quantity-=1
         resource.save
     else 
 	resource.delete
