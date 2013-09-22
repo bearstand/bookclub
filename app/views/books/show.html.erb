@@ -28,7 +28,7 @@
                                :action => "lend_book",
                                :lend => "lend_in",
                                :id => @book },
-                             :confirm => "确认借阅?",
+				:onclick => "return confirm('确认借阅?')",
                              :style=>"color:blue;font:bold 15px Arial; height:30px;width:90px" %>
       <% else %>
         <%= button_to "预借", { :controller => :bookclub,
@@ -71,7 +71,7 @@
   <%= button_to "新书上架", { :controller => "books",
                                               :action => "i_have_one",
                                               :id => @book.id },
-                                              :confirm => "shangjia?" %>
+                                              :confirm => "新书已经可以借阅了?" %>
   <%else%>
   <b>拥有者:</b>
   <table>
@@ -92,7 +92,8 @@
   <%= button_to "我有一本", { :controller => "books",
                                               :action => "i_have_one",
                                               :id => @book.id },
-                                            :confirm => "确认添加一本?" %>
+                                            :confirm => "你有相同的书可供借阅?" %>
+
   <br />
   <%end%>
 

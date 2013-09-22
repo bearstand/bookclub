@@ -1,4 +1,4 @@
-source 'http://rubygems.org'
+source 'http://ruby.taobao.org/'
 
 gem 'rails', '3.0.6'
 
@@ -35,3 +35,4 @@ gem 'will_paginate' , '>= 3.0.pre'
 #gem "capybara", "1.1.1"
 #gem "cucumber", "1.1.0"
 #gem "cucumber-rails", "0.3.2"
+#gem "jquery-rails"

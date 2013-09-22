@@ -25,18 +25,19 @@ class BookclubController < ApplicationController
       show_allbook='yes'
     end
 
-    if ( show_allbook != "yes" )
-	    if show_suggest == "yes"
-		    conditions += "books.status like 'suggest'"
-	    else
-		    conditions += "( books.status is null or books.status not like 'suggest')"
-	    end
-    end
+   #if ( show_allbook != "yes" )
+#	    if show_suggest == "yes"
+#		    conditions += "books.status like 'suggest'"
+##	    else
+#		    conditions += "( books.status is null or books.status not like 'suggest')"
+#	    end
+#    end
 
     if @owner
       joins +=   " inner join resources" +
                  " on resources.book_id = books.id" +
                  "   and resources.user_id = #{@owner.id}"
+      #conditions +=" and resources.user_id = #{@owner.id} "
       order  =   " resources.id desc"
     end
 

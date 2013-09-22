@@ -27,10 +27,10 @@ class Mailer < ActionMailer::Base
     @book   = book
     @current_readers = current_readers
 
-    # email = "guo_ping.luo@alcatel-lucent.com"
-    # mail(:to => email,
-    #      :cc => email,
-    #      :subject => "#{reader.name} 向您预借图书： #{book.title}")
+    #email = "richard.xiong@alcatel-lucent.com"
+    #mail(:to => email,
+    #     :cc => email,
+    #     :subject => "#{reader.name} 向您预借图书： #{book.title}")
 
     unless (reader.email.nil? || reader.email.empty? ||
             owner.email.nil? || owner.email.empty?)
