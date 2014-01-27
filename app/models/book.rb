@@ -21,6 +21,7 @@ class Book < ActiveRecord::Base
                           :source => :attr,
                           :source_type => "BookRating",
                           :dependent => :delete
+  #before_destroy :clear_book
 
   validates :title, :presence => true
 
@@ -30,5 +31,10 @@ class Book < ActiveRecord::Base
 
   def total_quantity
     resources.collect {|x| x.total_quantity}.sum
+  end
+
+  def clear_book(book)
+     Reading.destroy_all "book_id = #{book.id}" 
+     Resource.destroy_all "book_id = #{book.id}" 
   end
 end

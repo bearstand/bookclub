@@ -18,8 +18,7 @@
       <td class="list-actions">
         <%= link_to '显示', book %><br />
         <%= link_to '编辑', edit_book_path(book) %><br />
-        <%= link_to '删除我的资源', book, :confirm => "确认删除图书?",
-                  :method => :delete %>
+        <%= button_to '删除我的资源', book, :method => :delete, :confirm => "确认删除图书?" %>
       </td>
     </tr>
     <% end %>

@@ -14,7 +14,7 @@ namespace :douban do
     internal    = 10
 
     # counter = 0
-    Book.all.each do |b|
+    Book.where("image_url is NULL" ).each do |b| 
       # check that the real image file does exist,
       # otherwise the file need to download, too.
       if (b.image_url && File.exists?(image_path + b.image_url) || !(b.isbn =~ /^[A-Za-z0-9-]+$/))
